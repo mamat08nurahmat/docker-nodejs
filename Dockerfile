@@ -43,5 +43,5 @@ RUN npm cache clean --force
 COPY --chown=node:node . .
 EXPOSE 3000
 # Tini is now available at /sbin/tini
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD [ "node", "/bin/www" ]
+#ENTRYPOINT ["/sbin/tini", "--"]
+CMD [ "npm", "start" ]
