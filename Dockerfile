@@ -30,3 +30,18 @@
 # this will not have you setting up a complete image useful for local development, test, and prod
 # it's just meant to get you started with basic Dockerfile concepts and not focus too much on
 # proper Node.js use in a container.
+
+FROM node:10-alpine
+
+RUN apk add --update tini
+RUN mkdir -p /usr/src/app/node_modules && chown -R node:node /usr/src/app
+USER node
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+RUN npm cache clean --force
+COPY --chown=node:node . .
+EXPOSE 3000
+# Tini is now available at /sbin/tini
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD [ "node", "/bin/www" ]
